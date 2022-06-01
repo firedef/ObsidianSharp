@@ -17,6 +17,9 @@ public class Namespaces {
         Namespace ns = GetOrCreateNamespace(extractor.@namespace ?? "global");
         foreach (string @using in extractor.usings)
             ns.usings.Add(@using);
+        
+        foreach (TypeData type in extractor.types)
+            ns.types.Add(type);
     }
 
     private Namespace GetOrCreateNamespace(string name) {
@@ -29,6 +32,11 @@ public class Namespaces {
         foreach (KeyValuePair<string,Namespace> pair in namespaces) {
             string path = GetFilePath(pair.Value, outputPath);
             WriteToFile(path, pair.Value);
+
+            foreach (TypeData type in pair.Value.types) {
+                string filePath = GetTypeFilePath(pair.Value, type.name, outputPath);
+                WriteTypeToFile(filePath, type);
+            }
         }
     }
     
@@ -37,12 +45,16 @@ public class Namespaces {
         Directory.CreateDirectory(dir);
     }
 
-    private string GetFilePath(Namespace ns, string generalOutputPath) {
-        return Path.Join(generalOutputPath, Path.Join(ns.ns.Replace(".", "/"), ns.ns + ".md"));
-    }
+    private string GetFilePath(Namespace ns, string generalOutputPath) => Path.Join(generalOutputPath, Path.Join(ns.ns.Replace(".", "/"), ns.ns + ".md"));
+    private string GetTypeFilePath(Namespace ns, string type, string generalOutputPath) => Path.Join(generalOutputPath, Path.Join(ns.ns.Replace(".", "/"), ns.ns, type + ".md"));
 
     private void WriteToFile(string filePath, Namespace ns) {
         string txt = ns.Generate();
+        WriteTo(filePath, txt);
+    }
+    
+    private void WriteTypeToFile(string filePath, TypeData type) {
+        string txt = type.GenerateMarkdown();
         WriteTo(filePath, txt);
     }
     

@@ -9,6 +9,7 @@ public class FileDataExtractor {
     public string path;
     public CSharpParseOptions parseOptions;
     public List<string> usings = new();
+    public List<TypeData> types = new();
     public string? @namespace;
 
     public FileDataExtractor(string path, CSharpParseOptions parseOptions) {
@@ -23,23 +24,22 @@ public class FileDataExtractor {
 
         IEnumerable<MemberDeclarationSyntax> memberDeclarations = syntaxTree.GetRoot().DescendantNodes().OfType<MemberDeclarationSyntax>();
         foreach (MemberDeclarationSyntax declaration in memberDeclarations) {
-            if (declaration is NamespaceDeclarationSyntax ns) {
+            if (declaration is NamespaceDeclarationSyntax ns)
                 @namespace = ns.Name.ToString();
-                Console.WriteLine(@namespace);
-            }
-            if (declaration is FileScopedNamespaceDeclarationSyntax fns) {
+            
+            if (declaration is FileScopedNamespaceDeclarationSyntax fns)
                 @namespace = fns.Name.ToString();
-                Console.WriteLine(@namespace);
-            }
+
+            if (declaration is TypeDeclarationSyntax type) 
+                types.Add(new(type));
         }
-        
+
         foreach (UsingDirectiveSyntax usingDirective in syntaxTree.GetCompilationUnitRoot().Usings) {
             usings.Add(usingDirective.Name.ToString());
         }
-    }
 
-    private void ParseNode(SyntaxNode node) {
-        NamespaceDeclarationSyntax? namespaceDeclarationSyntax = node.Ancestors().OfType<NamespaceDeclarationSyntax>().FirstOrDefault();
-        if (namespaceDeclarationSyntax != null) @namespace = namespaceDeclarationSyntax.Name.ToString();
+        foreach (TypeData type in types) {
+            type.@namespace = @namespace ?? "global";
+        }
     }
 }
