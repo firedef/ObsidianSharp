@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="src" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0-1.final" />
     </ItemGroup>
 
 </Project>
