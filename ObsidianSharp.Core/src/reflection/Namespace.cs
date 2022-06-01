@@ -24,6 +24,10 @@ public class Namespace {
             generator.AddInternalLink(@using);
             generator.NextLine();
         }
+        
+        generator.NextLine();
+        generator.AddTag("namespace");
+        generator.NextLine();
 
         return generator.Generate();
     }

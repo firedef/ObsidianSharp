@@ -3,8 +3,10 @@ namespace ObsidianSharp.Core.markdown;
 public class ObsidianMdGenerator : MdGenerator {
     private bool calloutStarted = false;
     
-    public void AddInternalLink(string link) => Add($"[[{link}]]");
-    public void AddInternalLink(string link, string heading) => Add($"[[{link}#{heading}]]");
+    public void AddInternalLink(string link) => Add($"[[{link}]] ");
+    public void AddInternalLink(string link, string heading) => Add($"[[{link}#{heading}]] ");
+    
+    public void AddTag(string tag) => Add($"#{tag} ");
     
     public void AddIFrame(string link) => AddLine($"<iframe src=\"{link}\"></iframe>");
     public void AddIFrame(string link, string style) => AddLine($"<iframe src=\"{link}\" style=\"{style}\"></iframe>");

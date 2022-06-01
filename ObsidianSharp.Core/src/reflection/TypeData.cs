@@ -55,6 +55,11 @@ public class TypeData {
             generator.AddLine("  " + method);
         
         generator.AddInternalLink(@namespace);
+        generator.NextLine();
+        generator.AddTag(type);
+        generator.NextLine();
+        generator.AddTag("type");
+        generator.NextLine();
 
         return generator.Generate();
     }
