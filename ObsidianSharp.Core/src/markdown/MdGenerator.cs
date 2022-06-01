@@ -7,8 +7,8 @@ public class MdGenerator {
     private readonly Dictionary<string, int> footnoteRefs = new();
     private readonly List<string> footnotes = new();
 
-    public void Add(string txt) => md.Append(txt);
-    public void AddLine(string txt) => md.Append(txt + "<br/>\n");
+    public virtual void Add(string txt) => md.Append(txt);
+    public virtual void AddLine(string txt) => md.Append(txt + "<br/>\n");
 
     public void NextLine() => AddLine("");
     
@@ -40,7 +40,7 @@ public class MdGenerator {
     public void AddFootnoteRef(string title) => Add($" [^{footnoteRefs[title] + 1}]");
 
 
-    public string Generate() {
+    public virtual string Generate() {
         StringBuilder sb = new(md.ToString());
         sb.AppendLine();
 
