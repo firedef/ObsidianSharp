@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObsidianSharp.Core", "ObsidianSharp.Core\ObsidianSharp.Core.csproj", "{6297D7AA-68B0-4B51-8463-FA7307DC7F8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObsidianSharp.Cli", "ObsidianSharp.Cli\ObsidianSharp.Cli.csproj", "{5524F05D-CFB0-4949-BA1E-4B9ACF8DB76E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6297D7AA-68B0-4B51-8463-FA7307DC7F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6297D7AA-68B0-4B51-8463-FA7307DC7F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6297D7AA-68B0-4B51-8463-FA7307DC7F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6297D7AA-68B0-4B51-8463-FA7307DC7F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5524F05D-CFB0-4949-BA1E-4B9ACF8DB76E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5524F05D-CFB0-4949-BA1E-4B9ACF8DB76E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5524F05D-CFB0-4949-BA1E-4B9ACF8DB76E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5524F05D-CFB0-4949-BA1E-4B9ACF8DB76E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
