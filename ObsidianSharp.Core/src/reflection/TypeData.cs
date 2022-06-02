@@ -60,6 +60,9 @@ public class TypeData {
         generator.NextLine();
         generator.AddTag("type");
         generator.NextLine();
+        
+        generator.AddTag($"lvl_{@namespace.Split('.').Length + 1}");
+        generator.NextLine();
 
         return generator.Generate();
     }
