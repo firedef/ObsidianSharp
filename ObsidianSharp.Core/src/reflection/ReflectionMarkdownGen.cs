@@ -29,6 +29,8 @@ public class ReflectionMarkdownGen {
     }
 
     public void Generate() {
+        if (!CheckPaths()) return;
+        
         Namespaces namespaces = new();
         namespaces.ProcessAll(inputDir);
         namespaces.WriteToFiles(outputDir);
@@ -48,4 +50,20 @@ public class ReflectionMarkdownGen {
         
         graphData.WriteTo(Path.Join(outputDir, ".obsidian", "graph.json"));
     }
+
+    private bool CheckPaths() {
+        if (!Directory.Exists(inputDir)) {
+            Console.WriteLine($"Input directory is missing: {inputDir}");
+            return false;
+        }
+
+        if (!Directory.Exists(outputDir)) return true;
+
+        if (CheckOutputDirectory(outputDir)) return true;
+
+        Console.WriteLine("Output directory contains other files");
+        return false;
+    }
+
+    private bool CheckOutputDirectory(string path) => Directory.GetDirectories(path).All(CheckOutputDirectory) && Directory.GetFiles(path).Select(Path.GetExtension).All(ext => ext is ".md" or ".json");
 }
