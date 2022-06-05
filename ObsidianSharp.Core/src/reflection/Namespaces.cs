@@ -6,11 +6,53 @@ public class Namespaces {
     public readonly Dictionary<string, Namespace> namespaces = new();
 
     public void ProcessAll(string inputPath) {
-        string[] files = Directory.EnumerateFiles(inputPath, "*.cs", SearchOption.AllDirectories).ToArray();
-        foreach (string file in files) ProcessFile(file);
+        Console.WriteLine("Searching for files");
+        string[] files = EnumerateFiles(inputPath);
+        Console.WriteLine($"Found {files.Length} files");
+
+        for (int i = 0; i < files.Length; i++) 
+            ProcessFile(files[i], i, files.Length);
+
+        Console.WriteLine($"Analyzed {files.Length} .cs files");
     }
 
-    public void ProcessFile(string path) {
+    private static string[] EnumerateFiles(string path) {
+        int matchedCount = 0;
+        int analyzedFileCount = 0;
+        int analyzedDirectoryCount = 0;
+
+        List<string> matchedFiles = new();
+        Stack<string> directories = new();
+        
+        directories.Push(path);
+
+        while (directories.Count > 0) {
+            string dir = directories.Pop();
+            
+            Console.Write($"#{analyzedDirectoryCount}, found {matchedCount} .cs in {analyzedFileCount} files \r");
+
+            string[] containedDirectories = Directory.GetDirectories(dir);
+            foreach (string s in containedDirectories) directories.Push(s);
+
+            string[] files = Directory.GetFiles(dir);
+            foreach (string file in files) {
+                analyzedFileCount++;
+                string ext = Path.GetExtension(file);
+                if (ext is not ".cs") continue;
+                matchedCount++;
+                matchedFiles.Add(file);
+            }
+            
+            analyzedDirectoryCount++;
+        }
+
+        Console.WriteLine($"#{analyzedDirectoryCount}, found {matchedCount} in {analyzedFileCount} files");
+
+        return matchedFiles.ToArray();
+    }
+
+    public void ProcessFile(string path, int i, int count) {
+        Console.Write($"Analyzing {i}/{count} ({((double) i / count * 100):00.00}%) \r");
         FileDataExtractor extractor = new(path, CSharpParseOptions.Default);
         extractor.Extract();
 
@@ -28,8 +70,13 @@ public class Namespaces {
     }
 
     public void WriteToFiles(string outputPath) {
+        Console.WriteLine("Writing results to disk");
+        int i = 0;
+        int c = namespaces.Count;
+        
         ClearDirectory(outputPath);
         foreach (KeyValuePair<string,Namespace> pair in namespaces) {
+            Console.Write($"Namespace {i}/{c} ({((double) i / c * 100):00.00}%)\r");
             string path = GetFilePath(pair.Value, outputPath);
             WriteToFile(path, pair.Value);
 
@@ -37,6 +84,8 @@ public class Namespaces {
                 string filePath = GetTypeFilePath(pair.Value, type.name, outputPath);
                 WriteTypeToFile(filePath, type);
             }
+
+            i++;
         }
     }
     
