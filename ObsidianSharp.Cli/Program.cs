@@ -1,9 +1,6 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using ObsidianSharp.Core.markdown;
-using ObsidianSharp.Core.reflection;
+﻿using ObsidianSharp.Core.reflection;
 
-string inputPath = "../../../../../StockScreener3/";
-string outputPath = "../../../../../StockScreener3/Obsidian/";
+if (args.Length != 2) throw new ArgumentException("Arguments must be: input path, output path");
 
-ReflectionMarkdownGen gen = new(outputPath, inputPath);
+ReflectionMarkdownGen gen = new(args[1], args[0]);
 gen.Generate();
